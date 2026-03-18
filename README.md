@@ -28,6 +28,18 @@ Create `.env` in the repo root and add your Tripo key:
 TRIPO_API_KEY=tsk_YOUR_REAL_KEY
 ```
 
+(Optional) Override the input image used for generation (relative to the repo root or an absolute path):
+
+```env
+# INPUT_IMAGE_PATH=input_images/photo.jpg
+```
+
+(Optional) Override where the model is saved (defaults to `output/`):
+
+```env
+# OUTPUT_DIR=output
+```
+
 > If you don’t have a key yet, create one at: https://platform.tripo3d.ai/api-keys
 
 ---
@@ -41,9 +53,11 @@ TRIPO_API_KEY=tsk_YOUR_REAL_KEY
 python src/main.py
 ```
 
-Output is saved to:
+The script prints where it saved the generated model (absolute path). By default the file is written into:
 
 - `output/<input_basename>.glb`
+
+If you change `OUTPUT_DIR` in `.env`, it will save there instead.
 
 ---
 

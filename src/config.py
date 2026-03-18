@@ -43,4 +43,18 @@ if not API_KEY:
 # Tripo API base URL (used for task and upload endpoints)
 BASE_URL = os.getenv('TRIPO_API_BASE_URL', 'https://api.tripo3d.ai/v2/openapi')
 
-OUTPUT_DIR = '../output'
+# Root directory of the project (repo root)
+ROOT_DIR = os.path.dirname(os.path.dirname(__file__))
+
+# Output directory (defaults to <repo>/output)
+OUTPUT_DIR = os.path.abspath(os.getenv('OUTPUT_DIR', os.path.join(ROOT_DIR, 'output')))
+
+# Input image path (can be overridden via .env or environment variable)
+# Example in .env:
+#   INPUT_IMAGE_PATH=input_images/photo.jpg
+INPUT_IMAGE_PATH = os.path.abspath(
+    os.getenv(
+        'INPUT_IMAGE_PATH',
+        os.path.join(ROOT_DIR, 'input_images', 'images.jpg'),
+    )
+)

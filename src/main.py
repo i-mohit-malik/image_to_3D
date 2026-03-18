@@ -113,19 +113,44 @@ def generate_from_image(image_path: str):
 
 
 # 🔷 Step 2: Check Status
-def check_status(task_id: str, poll_interval: float = 5.0) -> str:
+def check_status(task_id: str, poll_interval: float = 5.0, max_retries: int = 10) -> str:
     print("\n⏳ Checking status...")
 
+    retry = 0
     while True:
         res = requests.get(
             f"{BASE_URL}/task/{task_id}",
             headers=HEADERS,
+            timeout=20,
         )
 
+        # Treat transient server errors (5xx) and non-JSON responses as retryable.
+        retryable_error = False
         try:
             status_payload = res.json()
         except ValueError:
-            raise RuntimeError(f"Invalid JSON status response ({res.status_code}): {res.text}")
+            retryable_error = True
+            status_payload = None
+
+        if retryable_error or res.status_code >= 500:
+            retry += 1
+            if retry > max_retries:
+                if status_payload is not None:
+                    raise RuntimeError(f"Status request failed ({res.status_code}): {status_payload}")
+                raise RuntimeError(
+                    f"Invalid JSON status response ({res.status_code}): {res.text}"
+                )
+
+            backoff = min(poll_interval * (2 ** (retry - 1)), 30)
+            print(
+                f"⚠️  Transient status error (HTTP {res.status_code}) - retrying in {backoff:.0f}s... "
+                f"({retry}/{max_retries})"
+            )
+            time.sleep(backoff)
+            continue
+
+        # Guarantee we have a dict for the typical success/error payload structure.
+        status_payload = status_payload or {}
 
         if res.status_code != 200 or status_payload.get("code") != 0:
             raise RuntimeError(f"Status request failed ({res.status_code}): {status_payload}")
@@ -205,13 +230,14 @@ def download_model(url, output_name: str):
     with open(file_path, "wb") as f:
         f.write(res.content)
 
-    print(f"✅ File saved at: {file_path}")
-    return file_path
+    abs_path = os.path.abspath(file_path)
+    print(f"✅ File saved at: {abs_path}")
+    return abs_path
 
 
 # 🔷 Main
 if __name__ == "__main__":
-    image_path = r"C:\Omniverse\Mohit\Image_to_3D\input_images\images.jpg"
+    image_path = INPUT_IMAGE_PATH
 
     try:
         task_id = generate_from_image(image_path)

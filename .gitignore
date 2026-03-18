@@ -6,6 +6,10 @@
 output/*
 !output/.gitkeep
 
+# Input images (user-provided). Keep an empty folder for guidance.
+input_images/*
+!input_images/.gitkeep
+
 # Python bytecode
 __pycache__/
 *.pyc
