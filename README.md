@@ -28,7 +28,7 @@ Create `.env` in the repo root and add your Tripo key:
 TRIPO_API_KEY=tsk_YOUR_REAL_KEY
 ```
 
-Here’s an example `.env` showing the supported settings (matching the screenshot):
+Here’s an example `.env` showing the supported settings:
 
 ```env
 TRIPO_API_KEY=tsk_YOUR_REAL_KEY
