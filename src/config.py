@@ -33,7 +33,7 @@ except (ImportError, ModuleNotFoundError):
                 os.environ.setdefault(key.strip(), value.strip())
 
 
-API_KEY = os.getenv('TRIPO_API_KEY')
+API_KEY: str = os.getenv('TRIPO_API_KEY') or ""
 if not API_KEY:
     raise RuntimeError(
         'Missing Tripo API key. Set TRIPO_API_KEY in your environment or in .env.'
