@@ -28,10 +28,13 @@ Create `.env` in the repo root and add your Tripo key:
 TRIPO_API_KEY=tsk_YOUR_REAL_KEY
 ```
 
-(Optional) Override the input image used for generation (relative to the repo root or an absolute path):
+Here’s an example `.env` showing the supported settings (matching the screenshot):
 
 ```env
-# INPUT_IMAGE_PATH=input_images/photo.jpg
+TRIPO_API_KEY=tsk_YOUR_REAL_KEY
+TRIPO_API_BASE_URL=https://api.tripo3d.ai/v2/openapi
+INPUT_IMAGE_PATH=input_images/images.jpg
+OUTPUT_DIR=output
 ```
 
 (Optional) Override where the model is saved (defaults to `output/`):
@@ -46,7 +49,7 @@ TRIPO_API_KEY=tsk_YOUR_REAL_KEY
 
 ## ▶️ Run it
 
-1. Put an image in `input_images/` (e.g. `input_images/photo.jpg`).
+1. Put an image in `input_images/` (e.g. `input_images/photo.jpg`) and copy path in .env file.
 2. Run:
 
 ```bash
