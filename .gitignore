@@ -1,0 +1,14 @@
+# Ignore credentials
+.env
+
+# Output models and caches
+# Keep the folder in git even if it's empty by tracking a placeholder file.
+output/*
+!output/.gitkeep
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Virtual environment
+.venv/
